@@ -1,11 +1,13 @@
 
+import { connection } from "next/server";
 import "./globals.css";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await connection()
   return (
     <html lang="en" className="scroll-smooth">
       <body

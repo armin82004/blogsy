@@ -14,6 +14,7 @@ type SetupInputs = {
 };
 
 export default function SetupProfile() {
+  
   const [preview, setPreview] = useState<string | null>(null);
   const router = useRouter();
   const [profileFile, setProfileFile] = useState<File | null>(null);
