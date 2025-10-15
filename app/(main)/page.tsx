@@ -65,7 +65,7 @@ export default async function Home() {
         <h1 className="text-xl font-bold sm:text-2xl">Editor&apos;s Picks</h1>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
           {posts
-            .filter((post) => post.isEditorsPick)
+            .filter((post) => post.is_editors_pick)
             .map((post) => {
               return (
                 <article
