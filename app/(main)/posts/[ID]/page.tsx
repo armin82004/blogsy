@@ -2,6 +2,8 @@ import { allPosts } from "../../../data/mock-posts";
 import { ArrowBack } from "../../../assets/icons";
 import Link from "next/link";
 import Image from "next/image";
+import { createClient } from "@/app/utils/supabase/server";
+import { notFound } from "next/navigation";
 
 interface Comment {
   id?: string;
@@ -12,10 +14,17 @@ interface Comment {
 }
 
 export default async function Post({ params }: { params: { ID: string } }) {
-  const {ID} = await params;
-  if (!ID) throw new Response("Post not found", { status: 404 });
-  const post = allPosts.find((p) => p.id === Number(ID));
-  if (!post) throw new Response("Post not found", { status: 404 });
+  const { ID } = await params;
+  const supabase = await createClient();
+  const { data: post, error: postError } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("id", ID)
+    .single();
+
+  if (postError || !post) {
+    notFound();
+  }
   return (
     <div className="container m-auto max-w-4xl p-3 flex flex-col items-center my-3 gap-2">
       <Link

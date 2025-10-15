@@ -1,13 +1,23 @@
 import Link from "next/link";
 import { allPosts } from "../../data/mock-posts";
+import { createClient } from "@/app/utils/supabase/client";
 
-export default function Posts() {
+export default async function Posts() {
+  const supabase = await createClient();
+  const { data: userData } = await supabase.auth.getUser();
+  const {data:posts,error:postsError} = await supabase
+    .from("posts")
+    .select("*")
+    .order("date", { ascending: false });
+  if(postsError){
+    return <p className="text-red-500">Failed to load posts.</p>
+  }
   return (
     <>
       <div className="container max-w-6xl py-3 px-5 mx-auto flex justify-center flex-col gap-5">
         <h1 className="text-2xl font-bold my-2">All Posts</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {allPosts.map((post) => {
+          {posts.map((post) => {
             return (
               <article
                 key={post.id}

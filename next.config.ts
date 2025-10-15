@@ -2,9 +2,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [new URL("https://avatar.iran.liara.run/**")],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatar.iran.liara.run",
+      },
+      {
+        protocol: "https",
+        hostname: "hqtedfmbeowgqudosubb.supabase.co",
+      },
+    ],
   },
-  /* config options here */
 };
 
 export default nextConfig;

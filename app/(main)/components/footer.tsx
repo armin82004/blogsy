@@ -5,19 +5,19 @@ export default function Footer() {
   const currentYear = now.getFullYear();
   return (
     <footer className="w-full border-t border-neutral-300 bg-white px-5 py-6 dark:border-neutral-800 dark:bg-neutral-900">
-      <div className="container mx-auto flex flex-col justify-between gap-8 border-b border-neutral-600 pb-5 md:flex-row">
-        <div className="order-1 flex max-w-xl flex-col">
+      <div className="container mx-auto flex flex-col justify-between gap-8 border-b border-b-neutral-500 dark:border-neutral-600 pb-5 md:flex-row">
+        <div className="order-1 flex max-w-lg flex-col">
           <h2 className="mb-2 text-lg font-semibold sm:text-xl">
             Blogsy: Your daily dose of insights and stories.
           </h2>
-          <p className="text-justify text-xs leading-relaxed text-neutral-500 sm:text-sm md:text-base">
+          <p className="text-justify text-xs leading-relaxed text-neutral-500 sm:text-xs md:text-sm">
             Blogsy is your go-to source for insightful articles, tutorials, and
             inspiration on a wide range of topics. We are passionate about
             sharing knowledge and sparking curiosity.
           </p>
         </div>
 
-        <div className="order-3 flex flex-col items-center md:order-2">
+        <div className="order-3 flex flex-col items-center md:order-2 grow">
           <h1 className="mb-2 text-lg font-semibold sm:text-xl">Follow Us</h1>
           <div className="flex gap-2">
             <div className="cursor-pointer rounded-full p-2 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700">
@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="flex items-center justify-center pt-5">
-        <p className="text-sm text-neutral-400 sm:text-base">
+        <p className="text-sm text-neutral-700 dark:text-neutral-400 sm:text-base">
           © {currentYear} Blogsy. All Rights Reserved.
         </p>
       </div>

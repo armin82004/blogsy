@@ -1,9 +1,6 @@
 @import "tailwindcss";
+@import "tailwindcss-animated";
 
-@theme{
+@theme {
   --color-overlay: oklch(0% 0 0 / 0.589);
-}
-
-em{
-  color: oklch(0% 0 0 / 0.589);
 }

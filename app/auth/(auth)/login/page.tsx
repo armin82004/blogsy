@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { ErrorIcon } from "../../../assets/icons"; // adjust path
-import { useRouter } from "next/navigation";
-import { supabase } from "@/app/supabase";
+import { useRouter, useSearchParams } from "next/navigation";
+import { login } from "../../../actions";
+import Image from "next/image";
+import { useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 type SignUpFormInputs = {
   email: string;
@@ -12,8 +14,6 @@ type SignUpFormInputs = {
 };
 
 export default function Login() {
-  const router = useRouter();
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -24,43 +24,47 @@ export default function Login() {
       password: "",
     },
   });
-
-  const onSubmit: SubmitHandler<SignUpFormInputs> = async ({
-    email,
-    password,
-  }) => {
-    setSubmitError(null);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+  useEffect(() => {
     if (error) {
-      setSubmitError(error.message);
-      return;
+      toast.custom((t) => (
+        <div
+          className={`flex gap-2 p-3 sm:p-4 text-sm sm:text-base items-center max-w-2xl bg-red-600 my-2 text-white rounded-full ${
+            t.visible && "animate-ease animate-fade-down"
+          }`}
+        >
+          <span>
+            <ErrorIcon
+              width={30}
+              height={30}
+              fill="dark:fill-neutral-100 h-6 sm:h-8"
+            />
+          </span>
+          <p>{error}</p>
+        </div>
+      ));
+      router.replace(window.location.pathname);
     }
-
-    router.push("/");
-  };
+  }, [error, router]);
 
   return (
     <>
+      <Toaster />
       <div className="select-none flex flex-col justify-center items-center h-screen w-screen sm:h-auto sm:max-w-xl md:max-w-2xl bg-gradient-to-b from-neutral-100 to-neutral-200 dark:from-neutral-900 dark:to-neutral-900 rounded-none sm:rounded-2xl shadow-md p-4 sm:p-12 gap-3">
-        <img src="/logo.png" className="h-12" />
+        <Image
+          width={70}
+          height={70}
+          alt="Site Logo"
+          src="/logo.png"
+          className="h-12 w-12"
+        />
         <h1 className="font-bold text-4xl">Login to Blogsy</h1>
-
-        {submitError && (
-          <div className="flex gap-2 py-3 px-2 max-w-2xl bg-red-600 my-2 text-white rounded-md">
-            <span>
-              <ErrorIcon width={24} height={24} fill="dark:fill-neutral-100" />
-            </span>
-            <p>{submitError}</p>
-          </div>
-        )}
 
         <form
           className="flex flex-col gap-3 my-2"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(login)}
         >
           <input
             {...register("email", {
@@ -70,7 +74,7 @@ export default function Login() {
                 message: "Please enter a valid email address",
               },
             })}
-            className="rounded-xs outline border border-neutral-200 hover:border-current focus:border-current dark:border-neutral-900 dark:focus:border-neutral-300 dark:focus:outline-neutral-300 dark:outline-neutral-500 dark:hover:outline-neutral-300 py-2 px-3 w-xs"
+            className="rounded-xs outline border outline-neutral-400 border-neutral-200 hover:border-orange-500 focus:border-orange-500 focus:outline-orange-500 hover:outline-orange-500 dark:bg-neutral-800  dark:border-neutral-800 dark:hover:border-neutral-300 dark:focus:border-neutral-300 dark:focus:outline-neutral-300 dark:outline-neutral-500 dark:hover:outline-neutral-300 py-2 px-3 w-xs"
             type="text"
             placeholder="Email"
           />
@@ -87,7 +91,7 @@ export default function Login() {
             {...register("password", {
               required: "This is required!",
             })}
-            className="rounded-xs outline border border-neutral-200 hover:border-current focus:border-current dark:border-neutral-900 dark:focus:border-neutral-300 dark:focus:outline-neutral-300 dark:outline-neutral-500 dark:hover:outline-neutral-300 py-2 px-3 w-xs"
+            className="rounded-xs outline border outline-neutral-400 border-neutral-200 hover:border-orange-500 focus:border-orange-500 focus:outline-orange-500 hover:outline-orange-500 dark:bg-neutral-800  dark:border-neutral-800 dark:hover:border-neutral-300 dark:hover:outline-neutral-300 dark:focus:border-neutral-300 dark:focus:outline-neutral-300 dark:outline-neutral-500  py-2 px-3 w-xs"
             type="password"
             placeholder="Password"
           />
