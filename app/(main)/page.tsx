@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { allPosts } from "../data/mock-posts";
 import Link from "next/link";
 import Image from "next/image";
+import { createClient } from "../utils/supabase/server";
 
 export const metadata: Metadata = {
   title: "Blogsy | Home",
@@ -10,6 +11,15 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
+    const supabase = await createClient();
+    const { data: userData } = await supabase.auth.getUser();
+    const {data:posts,error:postsError} = await supabase
+      .from("posts")
+      .select("*")
+      .order("date", { ascending: false });
+    if(postsError){
+      return <p className="text-red-500">Failed to load posts.</p>
+    }
 
   return (
     <div className="container mx-auto flex max-w-6xl flex-col gap-5 px-5 py-3">
@@ -54,7 +64,7 @@ export default async function Home() {
       <section className="flex flex-col gap-6">
         <h1 className="text-xl font-bold sm:text-2xl">Editor&apos;s Picks</h1>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
-          {allPosts
+          {posts
             .filter((post) => post.isEditorsPick)
             .map((post) => {
               return (

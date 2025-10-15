@@ -69,7 +69,7 @@ export default async function Profile() {
                   key={post.id}
                   className="p-4 rounded-xl transition-all shadow overflow-hidden hover:shadow-lg dark:bg-neutral-900 hover:scale-105 bg-neutral-200"
                 >
-                  <Link href="">
+                  <Link href={`/posts/${post.id}`}>
                     <img
                       src={post.image || "/placeholder.svg"}
                       alt={post.title}
