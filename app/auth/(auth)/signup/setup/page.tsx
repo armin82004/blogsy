@@ -14,7 +14,6 @@ type SetupInputs = {
 };
 
 export default function SetupProfile() {
-  
   const [preview, setPreview] = useState<string | null>(null);
   const router = useRouter();
   const [profileFile, setProfileFile] = useState<File | null>(null);
@@ -109,14 +108,6 @@ export default function SetupProfile() {
             </div>
             Profile Photo
           </label>
-          {fileError && (
-            <div className="flex gap-1 text-red-500">
-              <span>
-                <ErrorIcon width={20} height={20} fill="dark:fill-red-500" />
-              </span>
-              <p className="text-sm">Profile image is required!</p>
-            </div>
-          )}
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Name</label>
             <input

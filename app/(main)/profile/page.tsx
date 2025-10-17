@@ -1,4 +1,4 @@
-import { AddIcon } from "@/app/assets/icons";
+import { AddIcon, UserIcon } from "@/app/assets/icons";
 import { createClient } from "@/app/utils/supabase/server";
 import { error } from "console";
 import Image from "next/image";
@@ -29,14 +29,22 @@ export default async function Profile() {
       {UserInfoError && <h1>Error loading user info!</h1>}
       <div className="container mx-auto flex max-w-6xl items-center sm:items-start flex-col gap-5 px-5 my-4">
         <div className="flex flex-col sm:flex-row items-center w-full ">
-          <div className="bg-neutral-300 dark:bg-neutral-700 rounded-full p-1 sm:mx-4 hover:scale-105 transition-all hover:bg-neutral-500 mb-4 sm:mb-0">
-            <Image
-              width={200}
-              height={200}
-              className="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 rounded-full"
-              src={profile_img || "/placeholder.svg"}
-              alt="Profile Photo"
-            />
+          <div className="bg-neutral-300 dark:bg-neutral-700 rounded-full p-1 sm:mx-4  transition-all  mb-4 sm:mb-0">
+            {profile_img ? (
+              <Image
+                width={200}
+                height={200}
+                className="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 rounded-full"
+                src={profile_img}
+                alt="Profile Photo"
+              />
+            ) : (
+              <UserIcon
+                width={200}
+                height={200}
+                className="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 fill-neutral-800 dark:fill-neutral-300"
+              />
+            )}
           </div>
           <div className="flex flex-col items-center sm:items-start min-h-full sm:justify-center text-center sm:text-left w-full sm:w-auto">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">

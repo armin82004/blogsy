@@ -21,7 +21,6 @@ export default async function UserProfile({
     .eq("id", ID)
     .single();
 
-
   const { created_at, full_name, bio, email, profile_img, age } = user;
 
   const year = created_at ? new Date(created_at).getFullYear() : "Unavailable";
@@ -38,7 +37,7 @@ export default async function UserProfile({
       {userError && <h1>Error loading user info!</h1>}
       <div className="container mx-auto flex max-w-6xl items-center sm:items-start flex-col gap-5 px-5 my-4">
         <div className="flex flex-col sm:flex-row items-center w-full ">
-          <div className="bg-neutral-300 dark:bg-neutral-700 rounded-full p-1 sm:mx-4 hover:scale-105 transition-all hover:bg-neutral-500 mb-4 sm:mb-0">
+          <div className="bg-neutral-300 dark:bg-neutral-700 rounded-full p-1 sm:mx-4  transition-all mb-4 sm:mb-0">
             {profile_img ? (
               <Image
                 width={200}
@@ -51,7 +50,7 @@ export default async function UserProfile({
               <UserIcon
                 width={200}
                 height={200}
-                className="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 fill-neutral-800 dark:fill-neutral-100"
+                className="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 fill-neutral-800 dark:fill-neutral-300"
               />
             )}
           </div>
