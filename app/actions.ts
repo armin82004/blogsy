@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/app/utils/supabase/server";
 import { SubmitHandler } from "react-hook-form";
-import { cookies } from "next/headers";
 
 type SignUpFormInputs = {
   email: string;
@@ -207,3 +206,30 @@ export const createPost = async ({
     redirect(`/auth/signup/setup?SendError=${message}`);
   }
 };
+
+export const removePost = async (postId: string) => {
+  const supabase = await createClient();
+  const { error } = await supabase.from("posts").delete().eq("id", postId);
+  if (error) {
+    const message = encodeURIComponent(error.message ?? "Error Removing Post");
+    redirect(`/posts/${postId}?deleteError=${message}`);
+  } else {
+    redirect(`/profile`);
+  }
+};
+
+// export const handleGoogleSignIn = async () => {
+//   const supabase = await createClient();
+//   const { data, error } = await supabase.auth.signInWithOAuth({
+//     provider: "google",
+//     options: {
+//       redirectTo: "http://localhost:3000/",
+//     },
+//   });
+//   if (error) {
+//     console.error("Error signing in:", error.message);
+//   } else {
+//     console.log("Redirecting to Google...", data);
+//   }
+//   console.log(data);
+// };

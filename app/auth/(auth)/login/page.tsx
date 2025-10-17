@@ -1,12 +1,13 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { ErrorIcon } from "../../../assets/icons"; // adjust path
+import { ErrorIcon, GoogleIcon } from "../../../assets/icons"; // adjust path
 import { useRouter, useSearchParams } from "next/navigation";
 import { login } from "../../../actions";
 import Image from "next/image";
 import { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { createClient } from "@/app/utils/supabase/client";
 
 type SignUpFormInputs = {
   email: string;
@@ -48,6 +49,22 @@ export default function Login() {
       router.replace(window.location.pathname);
     }
   }, [error, router]);
+
+  async function handleGoogleSignIn() {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: "http://localhost:3000/",
+      },
+    });
+    if (error) {
+      console.error("Error signing in:", error.message);
+    } else {
+      console.log("Redirecting to Google...", data);
+    }
+    console.log(data);
+  }
 
   return (
     <>
@@ -112,9 +129,19 @@ export default function Login() {
           >
             {isSubmitting ? "Logging in..." : "Continue"}
           </button>
+          <button
+            type="button"
+            className="flex justify-center p-2 bg-neutral-800 cursor-pointer text-white hover:scale-105 border border-transparent active:border-neutral-700 active:bg-neutral-800 w- rounded-full transition-all hover:text-white"
+            value="Continue"
+            disabled={isSubmitting}
+            onClick={handleGoogleSignIn}
+          >
+            <GoogleIcon className="mr-2" />
+            Continue with Google
+          </button>
         </form>
 
-        <p className="dark:text-neutral-400 mb-2">
+        <p className="dark:text-neutral-400 mb-2 ">
           Don&apos;t have an account?{" "}
           <span
             onClick={() => router.push("/auth/signup")}
