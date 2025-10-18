@@ -52,9 +52,11 @@ export default async function Profile() {
             </h1>
             <h2 className="text-base sm:text-lg leading-tight mt-1">{bio}</h2>
             <p className="text-xs sm:text-sm mt-1">Joined in {year}</p>
-            <button className="bg-orange-500 py-2 px-4 my-2 rounded-full text-white transition-colors cursor-pointer hover:bg-orange-700">
-              Edit Profile
-            </button>
+            <Link href="/EditProfile">
+              <button className="bg-orange-500 py-2 px-4 my-2 rounded-full text-white transition-colors cursor-pointer hover:bg-orange-700">
+                Edit Profile
+              </button>
+            </Link>
           </div>
         </div>
       </div>
