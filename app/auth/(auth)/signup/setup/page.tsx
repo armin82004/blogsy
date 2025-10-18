@@ -31,10 +31,7 @@ export default function SetupProfile() {
     },
   });
   const searchParams = useSearchParams();
-  const error =
-    searchParams.get("insertError") ||
-    searchParams.get("userError") ||
-    searchParams.get("uploadError");
+  const error = searchParams.get("uploadError");
   useEffect(() => {
     if (error) {
       setIsSubmitting(false);
@@ -54,7 +51,10 @@ export default function SetupProfile() {
           <p>{error}</p>
         </div>
       ));
-      router.replace(window.location.pathname);
+
+      setTimeout(() => {
+        router.replace(window.location.pathname);
+      }, 2000);
     }
   }, [searchParams, router, error]);
 
@@ -99,22 +99,41 @@ export default function SetupProfile() {
                 accept="image/*"
                 id="file-upload"
                 onChange={(e) => {
-                  const file = e.target.files?.[0] ?? null;
-                  setProfileFile(file);
-                  if (file) setPreview(URL.createObjectURL(file));
+                  let file = e.target.files?.[0] ?? null;
+                  if (file) {
+                    if (file.size > 700 * 1024) {
+                      const message = encodeURIComponent(
+                        "File is too big! Max 700KB"
+                      );
+                      router.push(`/auth/signup/setup?uploadError=${message}`);
+                      file = null;
+                      return;
+                    }
+                    setProfileFile(file);
+                    setPreview(URL.createObjectURL(file));
+                    setFileError(false);
+                  }
                 }}
                 className="hidden"
               />
             </div>
             Profile Photo
           </label>
+          {fileError && (
+            <div className="flex gap-1 text-red-500">
+              <span>
+                <ErrorIcon width={20} height={20} fill="dark:fill-red-500" />
+              </span>
+              <p className="text-sm">Error sending profile image!</p>
+            </div>
+          )}
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Name</label>
             <input
               {...register("fullName", {
                 required: "Name is required!",
                 pattern: {
-                  value: /^[A-Za-z]{2,}\s[A-Za-z]{2,}$/,
+                  value: /^[A-Za-z]{2,}(\s[A-Za-z]{2,})?$/,
                   message: "Enter your first and last name (letters only)",
                 },
               })}
@@ -141,7 +160,7 @@ export default function SetupProfile() {
                   message: "Bio must be less then 200 characters",
                 },
                 pattern: {
-                  value: /^[a-zA-Z0-9\s.,'"!?()-]*$/,
+                  value: /^[\p{L}\p{N}\p{P}\p{S}\p{Zs}]*$/u,
                   message: "Bio contains invalid characters",
                 },
               })}

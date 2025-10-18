@@ -217,19 +217,3 @@ export const removePost = async (postId: string) => {
     redirect(`/profile`);
   }
 };
-
-// export const handleGoogleSignIn = async () => {
-//   const supabase = await createClient();
-//   const { data, error } = await supabase.auth.signInWithOAuth({
-//     provider: "google",
-//     options: {
-//       redirectTo: "http://localhost:3000/",
-//     },
-//   });
-//   if (error) {
-//     console.error("Error signing in:", error.message);
-//   } else {
-//     console.log("Redirecting to Google...", data);
-//   }
-//   console.log(data);
-// };
