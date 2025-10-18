@@ -218,6 +218,86 @@ export const removePost = async (postId: string) => {
   }
 };
 
+export async function getUserProfile() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data, error } = await supabase
+    .from("authors")
+    .select("full_name, bio, age, profile_img")
+    .eq("id", user.id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching profile:", error);
+    return null;
+  }
+
+  return data;
+}
+
+type ProfileInputs = {
+  full_name: string;
+  bio: string;
+  age: number;
+  profile_img?: File | null;
+};
+
+export async function updateUserProfile({
+  profile_img,
+  full_name,
+  bio,
+  age,
+}: ProfileInputs) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("No user logged in");
+
+  let profileUrl = null;
+
+  if (profile_img) {
+    const fileExt = profile_img.name.split(".").pop();
+    const fileName = `${user.id}.${fileExt}`;
+    const filePath = `Profiles/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("profiles")
+      .upload(filePath, profile_img, { upsert: true });
+
+    if (uploadError) {
+      const message = encodeURIComponent(uploadError.message);
+      redirect(`/auth/signup/setup?uploadError=${message}`);
+    }
+
+    const { data: publicURLData } = await supabase.storage
+      .from("profiles")
+      .getPublicUrl(filePath);
+    profileUrl = publicURLData.publicUrl;
+  }
+
+  const { data: udata, error } = await supabase.from("authors").upsert(
+    {
+      id: user.id,
+      full_name: full_name,
+      bio: bio,
+      age: age,
+      email: user.email,
+      ...(profileUrl && { profile_img: profileUrl }),
+    },
+    { onConflict: "id" }
+  );
+
+  if (error) throw udata;
+
+  return true;
+}
+
+
 // export const handleGoogleSignIn = async () => {
 //   const supabase = await createClient();
 //   const { data, error } = await supabase.auth.signInWithOAuth({
