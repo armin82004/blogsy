@@ -6,7 +6,7 @@ import { getUserProfile, updateUserProfile } from "@/app/actions";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { createClient } from "../utils/supabase/client";
-import Router from "next/navigation";
+import Router, { useRouter } from "next/navigation";
 import { redirect } from "next/dist/server/api-utils";
 
 type ProfileInputs = {
@@ -65,7 +65,7 @@ export default function EditProfile() {
     }
     fetchData();
   }, [reset]);
-
+  const router = useRouter()
   const onSubmit = async (data: ProfileInputs) => {
     if (data.profile_img && data.profile_img.size > 700 * 1024) {
       toast.error("Profile image is too big! Max 700kb.");
@@ -75,6 +75,7 @@ export default function EditProfile() {
     try {
       await updateUserProfile(data);
       toast.success("Profile Updated!");
+      router.push("/profile")
     } catch (error) {
       console.error(error);
       toast.error("Error Updating Profile!");
