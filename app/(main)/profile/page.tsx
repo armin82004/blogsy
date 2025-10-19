@@ -4,6 +4,31 @@ import { error } from "console";
 import Image from "next/image";
 import Link from "next/link";
 
+export async function generateMetadata() {
+  const supabase = await createClient();
+  const { data: userData } = await supabase.auth.getUser();
+  const { data: user, error: userError } = await supabase
+    .from("authors")
+    .select("*")
+    .eq("id", userData.user?.id)
+    .single();
+
+  if (!user) {
+    return { title: "Author Not Found", description: "" };
+  }
+
+  return {
+    title: `${user.full_name} | Blogsy`,
+    description: user.bio?.slice(0, 160),
+    openGraph: {
+      title: user.name,
+      description: user.bio?.slice(0, 160),
+      images: [user.profile_img],
+      type: "profile",
+    },
+  };
+}
+
 export default async function Profile() {
   const supabase = await createClient();
   const {
@@ -88,7 +113,7 @@ export default async function Profile() {
                   </Link>
 
                   <Link href={`/posts/${post.id}`}>
-                    <h2 className="text-base sm:text-lg font-semibold hover:text-orange-500 mt-2 line-clamp-2 text-justify tracking-tight">
+                    <h2 className="text-base sm:text-lg font-semibold hover:text-orange-500 mt-2 line-clamp-2 tracking-tight">
                       {post.title}
                     </h2>
                   </Link>

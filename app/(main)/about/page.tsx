@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Blogsy | About Us",
+  description:
+    "Learn more about Blogsy, our mission, team, and how we bring you the latest in technology, AI, and software trends.",
+};
 
 export default function About() {
   return (

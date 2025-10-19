@@ -8,11 +8,13 @@ import Image from "next/image";
 import { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { createClient } from "@/app/utils/supabase/client";
+import { Metadata } from "next";
 
 type SignUpFormInputs = {
   email: string;
   password: string;
 };
+
 
 export default function Login() {
   const {

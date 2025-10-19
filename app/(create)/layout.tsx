@@ -1,5 +1,11 @@
 import "@/app/globals.css";
 
+export const metadata = {
+  title: "Blogsy | Create a Post",
+  description:
+    "Create a new Blogsy post to share your thoughts, tutorials, and insights with the technology and AI community.",
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>

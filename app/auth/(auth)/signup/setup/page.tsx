@@ -6,12 +6,14 @@ import { setupProfile } from "../../../../actions";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Metadata } from "next";
 
 type SetupInputs = {
   fullName: string;
   bio: string;
   age: number;
 };
+
 
 export default function SetupProfile() {
   const [preview, setPreview] = useState<string | null>(null);

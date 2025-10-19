@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import PostToaster from "../../components/PostToaster";
 import { removePost } from "@/app/actions";
 import DeleteButton from "../../components/deleteButton";
+import { allPosts } from "@/app/data/mock-posts";
+import AddComent from "../../components/AddComent";
 
 interface Comment {
   id?: string;
@@ -13,6 +15,34 @@ interface Comment {
   name: string;
   time: string;
   content: string;
+}
+
+export async function generateMetadata({ params }: { params: { ID: string } }) {
+  const supabase = await createClient();
+  const { data: post } = await supabase
+    .from("posts")
+    .select("title, description, image")
+    .eq("id", params.ID)
+    .single();
+
+  if (!post) {
+    return {
+      title: "Post Not Found",
+      description: "This post does not exist",
+    };
+  }
+
+  return {
+    title: `Blogsy | ${post.title}`,
+    description: post.description.slice(0, 160),
+    openGraph: {
+      title: post.title,
+      description: post.description.slice(0, 160),
+      url: `https://hqtedfmbeowgqudosubb.supabase.co/storage/v1/object/public/posts/Posts/${params.ID}`,
+      images: [post.image],
+      type: "article",
+    },
+  };
 }
 
 export default async function Post({ params }: { params: { ID: string } }) {
@@ -24,6 +54,24 @@ export default async function Post({ params }: { params: { ID: string } }) {
     .select("*")
     .eq("id", ID)
     .single();
+
+  const { data: authordata } = await supabase
+    .from("authors")
+    .select("*")
+    .eq("id", authData.user?.id)
+    .single();
+
+  const { data: comments } = await supabase
+    .from("comments")
+    .select("*")
+    .eq("post_id", ID);
+
+  const userIds = comments?.map((c) => c.user_id) ?? [];
+
+  const { data: authors } = await supabase
+    .from("authors")
+    .select("*")
+    .in("id", userIds);
 
   if (postError || !post) {
     notFound();
@@ -72,28 +120,41 @@ export default async function Post({ params }: { params: { ID: string } }) {
           {post.description}
         </p>
         <h1 className="text-2xl font-bold my-2 mr-auto">Comments</h1>
-        {post.comments.map((comment: Comment, index: number) => {
+        {comments?.map((comment) => {
+          const author = authors?.find((a) => a.id === comment.user_id);
+
           return (
-            <div className="flex flex-col gap-3 mr-auto" key={index}>
-              <div className="flex gap-3 items-start">
+            <div className="flex flex-col gap-2 sm:gap-3 mr-auto" key={comment}>
+              <div className="flex gap-2 sm:gap-3 items-start">
                 <Image
                   width={50}
                   height={50}
-                  src={comment.profile}
+                  src={author.profile_img || "/placeholder.svg"}
                   alt=""
-                  className="w-fit h-10"
+                  className="w-8 h-8 sm:w-12 sm:h-12 md:w-[50px] md:h-[50px] max-w-full rounded-full flex-shrink-0"
                 />
-                <div className="flex flex-col">
-                  <div className="flex gap-2 items-baseline">
-                    <h1 className="text-lg  font-bold">{comment.name}</h1>
-                    <p className="text-xs">{comment.time}</p>
+                <div className="flex flex-col justify-center min-w-0 flex-1">
+                  <div className="flex flex-wrap gap-1 sm:gap-2 items-baseline">
+                    <h1 className="text-base sm:text-lg font-bold truncate hover:text-orange-500 transition-colors ">
+                      <Link href={`/profile/${author.id}`}>
+                        {author.full_name}
+                      </Link>
+                    </h1>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground whitespace-nowrap">
+                      {new Date(comment.created_at).toLocaleString()}
+                    </p>
                   </div>
-                  <p className="text-sm">{comment.content}</p>
+                  <p className="text-xs sm:text-sm break-words">
+                    {comment.content}
+                  </p>
                 </div>
               </div>
             </div>
           );
         })}
+        {authData.user?.id && (
+          <AddComent params={{ postID: post.id, userID: authData.user.id }} />
+        )}
       </div>
     </>
   );

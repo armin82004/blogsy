@@ -11,16 +11,31 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-    const supabase = await createClient();
-    const { data: userData } = await supabase.auth.getUser();
-    const {data:posts,error:postsError} = await supabase
-      .from("posts")
-      .select("*")
-      .order("date", { ascending: false });
-    if(postsError){
-      return <p className="text-red-500">Failed to load posts.</p>
-    }
+  const supabase = await createClient();
+  const { data: userData } = await supabase.auth.getUser();
+  const { data: posts, error: postsError } = await supabase
+    .from("posts")
+    .select("*")
+    .order("date", { ascending: false });
+  if (postsError) {
+    return <p className="text-red-500">Failed to load posts.</p>;
+  }
 
+  const { count, error: postError } = await supabase
+    .from("posts")
+    .select("id", { count: "exact", head: true });
+
+  if (postError) {
+    throw postError;
+  }
+  const randomOffset = Math.floor(Math.random() * (count ?? 0));
+  const { data: randomPost, error } = await supabase
+    .from("posts")
+    .select("id")
+    .range(randomOffset, randomOffset);
+  if (error) {
+    throw error;
+  }
   return (
     <div className="container mx-auto flex max-w-6xl flex-col gap-5 px-5 py-3">
       <section className="flex h-80 flex-col items-center justify-center gap-4 rounded-2xl bg-[url(/images/1.jpg)] px-5 text-white">
@@ -33,7 +48,7 @@ export default async function Home() {
           world.
         </p>
         <button className="cursor-pointer rounded bg-orange-500 px-3 py-2 text-xs font-semibold transition-all hover:scale-105 hover:bg-orange-600 sm:px-4 sm:text-sm md:text-base">
-          Start Reading
+          <Link href={`/posts/${randomPost[0].id}`}>Start Reading</Link>
         </button>
       </section>
 
@@ -84,7 +99,7 @@ export default async function Home() {
                   </Link>
 
                   <Link href={`/posts/${post.id}`}>
-                    <h2 className="mt-2 line-clamp-2 text-justify font-semibold tracking-tight hover:text-orange-500 sm:text-xl">
+                    <h2 className="mt-2 line-clamp-2  font-semibold tracking-tight hover:text-orange-500 sm:text-xl">
                       {post.title}
                     </h2>
                   </Link>
@@ -109,7 +124,7 @@ export default async function Home() {
           range of topics.
         </p>
         <button className="cursor-pointer rounded bg-orange-500 px-4 py-2 text-xs font-semibold text-white transition-all hover:scale-105 hover:bg-orange-600 sm:text-sm md:text-base">
-          Browse All Content
+          <Link href="/posts">Browse All Content</Link>
         </button>
       </section>
     </div>

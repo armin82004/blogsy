@@ -297,19 +297,20 @@ export async function updateUserProfile({
   return true;
 }
 
-
-// export const handleGoogleSignIn = async () => {
-//   const supabase = await createClient();
-//   const { data, error } = await supabase.auth.signInWithOAuth({
-//     provider: "google",
-//     options: {
-//       redirectTo: "http://localhost:3000/",
-//     },
-//   });
-//   if (error) {
-//     console.error("Error signing in:", error.message);
-//   } else {
-//     console.log("Redirecting to Google...", data);
-//   }
-//   console.log(data);
-// };
+export async function addCommentAction(
+  postId: string,
+  userId: string,
+  content: string
+) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("comments").insert({
+    post_id: postId,
+    user_id: userId,
+    content,
+  });
+  if (error) {
+    console.error(error);
+    throw new Error("Error adding comment");
+  }
+  revalidatePath(`/post/${postId}`);
+}

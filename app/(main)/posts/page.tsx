@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { allPosts } from "../../data/mock-posts";
 import { createClient } from "@/app/utils/supabase/client";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Blogsy | All Posts",
+  description:
+    "Explore all Blogsy articles, tutorials, and latest updates in technology, AI, and software development.",
+};
 
 export default async function Posts() {
   const supabase = await createClient();
@@ -32,7 +39,7 @@ export default async function Posts() {
                 </Link>
 
                 <Link href={`/posts/${post.id}`}>
-                  <h2 className="sm:text-lg font-semibold hover:text-orange-500 mt-2 line-clamp-2 text-justify tracking-tight">
+                  <h2 className="sm:text-lg font-semibold hover:text-orange-500 mt-2 line-clamp-2 tracking-tight">
                     {post.title}
                   </h2>
                 </Link>

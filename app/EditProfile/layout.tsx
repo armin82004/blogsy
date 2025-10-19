@@ -1,5 +1,11 @@
 import "@/app/globals.css";
 
+export const metadata = {
+  title: "Blogsy | Edit Profile",
+  description:
+    "Edit your Blogsy profile to update your personal information, avatar, and preferences for a personalized experience.",
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>

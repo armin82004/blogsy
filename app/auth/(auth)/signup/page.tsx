@@ -8,9 +8,16 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { createClient } from "@/app/utils/supabase/client";
+import { Metadata } from "next";
 type SignUpFormInputs = {
   email: string;
   password: string;
+};
+
+export const metadata: Metadata = {
+  title: "Blogsy | Sign Up",
+  description:
+    "Create a Blogsy account to start posting, commenting, and following the latest updates in technology, AI, and software development.",
 };
 
 export default function SignUp() {
@@ -66,9 +73,6 @@ export default function SignUp() {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: "http://localhost:3000/",
-      },
     });
     if (error) {
       console.error("Error signing in:", error.message);
