@@ -14,12 +14,6 @@ type SignUpFormInputs = {
   password: string;
 };
 
-export const metadata: Metadata = {
-  title: "Blogsy | Sign Up",
-  description:
-    "Create a Blogsy account to start posting, commenting, and following the latest updates in technology, AI, and software development.",
-};
-
 export default function SignUp() {
   const router = useRouter();
   const searchParams = useSearchParams();
