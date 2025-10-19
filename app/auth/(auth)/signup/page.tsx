@@ -144,7 +144,7 @@ export default function SignUp() {
 
           <button
             type="button"
-            className="flex justify-center p-2 bg-neutral-800 cursor-pointer text-white hover:scale-105  border border-transparent active:border-neutral-700 active:bg-neutral-800 w- rounded-full transition-all hover:text-white"
+            className="flex justify-center p-2 dark:bg-neutral-800 cursor-pointer dark:text-white hover:scale-105 border border-transparent dark:active:border-neutral-700 dark:active:bg-neutral-800 w- rounded-full transition-all dark:hover:text-white bg-neutral-300 active:border-neutral-400 "
             value="Continue"
             onClick={handleGoogleSignIn}
           >
