@@ -282,7 +282,7 @@ export default function Header() {
             </div>
             {user && (
               <button
-                className="hidden sm:block px-4 py-2 bg-orange-600 rounded-full hover:bg-orange-700 cursor-pointer transition-colors active:bg-orange-800 border border-transparent active:border-orange-600"
+                className="hidden sm:block px-4 py-2 text-white bg-orange-600 rounded-full hover:bg-orange-700 cursor-pointer transition-colors active:bg-orange-800 border border-transparent active:border-orange-600"
                 onClick={() => router.push("/create")}
               >
                 Create Post

@@ -18,7 +18,7 @@ type ProfileInputs = {
 
 export default function EditProfile() {
   const [preview, setPreview] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(true);
   const {
     register,
     handleSubmit,
@@ -40,13 +40,11 @@ export default function EditProfile() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      console.log("user:", user);
       const { data, error } = await supabase
         .from("authors")
         .select("*")
         .eq("id", user?.id)
         .single();
-      console.log("profile data:", data, "error:", error);
     }
     test();
   }, []);
@@ -54,7 +52,7 @@ export default function EditProfile() {
   useEffect(() => {
     async function fetchData() {
       const userData = await getUserProfile();
-      console.log(userData);
+      setIsSubmitting(false)
       reset({
         full_name: userData?.full_name,
         bio: userData?.bio,
@@ -65,7 +63,7 @@ export default function EditProfile() {
     }
     fetchData();
   }, [reset]);
-  const router = useRouter()
+  const router = useRouter();
   const onSubmit = async (data: ProfileInputs) => {
     if (data.profile_img && data.profile_img.size > 700 * 1024) {
       toast.error("Profile image is too big! Max 700kb.");
@@ -75,7 +73,7 @@ export default function EditProfile() {
     try {
       await updateUserProfile(data);
       toast.success("Profile Updated!");
-      router.push("/profile")
+      router.push("/profile");
     } catch (error) {
       console.error(error);
       toast.error("Error Updating Profile!");
