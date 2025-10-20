@@ -6,8 +6,7 @@ import { getUserProfile, updateUserProfile } from "@/app/actions";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { createClient } from "../utils/supabase/client";
-import Router, { useRouter } from "next/navigation";
-import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 
 type ProfileInputs = {
   full_name: string;

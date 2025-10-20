@@ -109,7 +109,7 @@ export default async function Post({ params }: { params: { ID: string } }) {
             Published on {post.date} • By{" "}
             <Link
               href={isUser ? "/profile" : `/profile/${post.author_id}`}
-              className="hover:text-orange-500 hover:underline transition-colors"
+              className="hover:text-orange-500 text-neutral-500 dark:text-neutral-300 font-semibold hover:underline transition-colors"
             >
               {post.writer}
             </Link>

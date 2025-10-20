@@ -262,8 +262,25 @@ export async function updateUserProfile({
 
   if (profile_img) {
     const fileExt = profile_img.name.split(".").pop();
-    const fileName = `${user.id}.${fileExt}`;
+    const fileName = `${user.id}_${Date.now()}.${fileExt}`;
     const filePath = `Profiles/${fileName}`;
+
+    const { data: exitingData } = await supabase
+      .from("authors")
+      .select("profile_img")
+      .eq("id", user.id)
+      .single();
+
+    if (exitingData?.profile_img) {
+      try {
+        const oldphoto = exitingData.profile_img.split("/").pop();
+        await supabase.storage
+          .from("profiles")
+          .remove([`Profiles/${oldphoto}`]);
+      } catch (error) {
+        throw error;
+      }
+    }
 
     const { error: uploadError } = await supabase.storage
       .from("profiles")
