@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Blogsy
+
+> Your daily dose of insights and stories.
+
+Blogsy is a modern blogging platform for discovering and sharing insightful articles, tutorials, and stories across a wide range of topics — from Technology and AI to Health, Travel, Finance, and more.
+
+🔗 **Live Demo:** [blogsy-v3g3.vercel.app](https://blogsy-v3g3.vercel.app)
+
+---
+
+## Features
+
+- **Home feed** — Curated Editor's Picks and Trending Topics to surface the best content
+- **Posts browser** — Browse all published articles in one place
+- **Category tags** — Filter by Technology, Health & Wellness, Travel, Personal Development, Finance, Food & Recipes
+- **Newsletter** — Subscribe for the latest updates
+- **About page** — Mission, history, and team info
+- **Responsive design** — Optimised for desktop and mobile
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js |
+| Deployment | Vercel |
+| Storage | Supabase (image storage) |
+
+> Update this table to reflect your full stack (e.g. database, auth, styling library).
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/your-username/blogsy.git
+cd blogsy
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Fill in your Supabase URL, keys, and any other required variables
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment Variables
 
-## Learn More
+Create a `.env.local` file in the root of the project and add the following:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> Add any additional variables your project requires.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+blogsy/
+├── app/               # Next.js app directory (pages & layouts)
+│   ├── page.tsx       # Home page
+│   ├── posts/         # Posts listing & detail pages
+│   └── about/         # About page
+├── components/        # Reusable UI components
+├── public/            # Static assets
+└── ...
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> Adjust the structure above to match your actual file layout.
+
+---
+
+## Deployment
+
+This project is deployed on **Vercel**. To deploy your own instance:
+
+1. Push your repository to GitHub
+2. Import the project at [vercel.com/new](https://vercel.com/new)
+3. Add your environment variables in the Vercel dashboard
+4. Deploy
+
+---
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Contact
+
+Built with ❤️ by the Blogsy team.
