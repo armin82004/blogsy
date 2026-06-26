@@ -232,7 +232,7 @@ export default function Header() {
 
           <nav className="flex items-center gap-4 group">
             <Link href="/" className="flex items-center gap-2">
-              <Image
+              <img
                 width={92}
                 height={92}
                 title="Blogsy"

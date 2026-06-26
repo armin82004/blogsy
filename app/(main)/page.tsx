@@ -88,13 +88,10 @@ export default async function Home() {
                   className="overflow-hidden rounded-xl bg-neutral-200 p-4 shadow transition-all hover:scale-105 hover:shadow-lg dark:bg-neutral-900"
                 >
                   <Link href={`/posts/${post.id}`}>
-                    <Image
-                      src={post.image || "/placeholder.svg"}
+                    <img
+                      src={post.image}
                       alt={post.title}
-                      width={800}
-                      height={600}
-                      className="h-auto w-full rounded-xl object-cover"
-                      priority={false}
+                      className="rounded-xl w-full h-46 object-cover"
                     />
                   </Link>
 
