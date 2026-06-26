@@ -1,3 +1,5 @@
+![Blogsy Preview](public/mockup.png)
+
 # Blogsy
 
 > Your daily dose of insights and stories.
