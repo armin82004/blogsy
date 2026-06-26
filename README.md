@@ -1,4 +1,4 @@
-![Blogsy Preview](public/mockup.png)
+![Blogsy Preview](public/67shots_so.png)
 
 # Blogsy
 
