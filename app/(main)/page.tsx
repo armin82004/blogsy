@@ -48,7 +48,11 @@ export default async function Home() {
           world.
         </p>
         <button className="cursor-pointer rounded bg-orange-500 px-3 py-2 text-xs font-semibold transition-all hover:scale-105 hover:bg-orange-600 sm:px-4 sm:text-sm md:text-base">
-          <Link href={`/posts/${randomPost[0].id}`}>Start Reading</Link>
+          <Link
+            href={!(posts.length === 0) ? `(/posts/${randomPost[0].id})` : ""}
+          >
+            Start Reading
+          </Link>
         </button>
       </section>
 
